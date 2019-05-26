@@ -1,0 +1,129 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>OLIE - WEB Beta</title>
+    <link href="main.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div style="text-align:center; color:#ffffff; font-size:25pt;">
+        <strong>원하는 노래를<BR>검색해보세요.</strong>
+    </div>
+
+    <form id="search-term"> <br><br><input id="query" type="text" placeholder="검색"> <br>
+    </form>
+
+    </div>
+    </div>
+    <br> <br> <br> <br> <br> <br> <br> <br> <br><br><br>
+
+    <iframe style=" position: absolute;  left: 0; right: 0; margin-left: auto; margin-right: auto;" id="ytplayer" width="560" height="315" src="http://www.youtube.com/embed/Fm5iP0S1z9w?autoplay=1?rel=0&amp;autoplay" allow='autoplay' frameborder="0" allowfullscreen></iframe>
+    <script>
+        var player;
+
+        // this function gets called when API is ready to use
+        function onYouTubePlayerAPIReady() {
+            // create the global player from the specific iframe (#video)
+            player = new YT.Player('video', {
+                events: {
+                    // call this function when player is ready to use
+                    'onReady': onPlayerReady
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            $('#search-term').submit(function(event) {
+                event.preventDefault();
+                var searchTerm = $('#query').val();
+                getRequest(searchTerm);
+            });
+        });
+
+        function getRequest(searchTerm) {
+            var url = 'https://www.googleapis.com/youtube/v3/search';
+            var params = {
+                part: 'snippet',
+                key: 'AIzaSyABsZWvNSXqn6Xla0IVWMktRnQVhmf258g',
+                maxResults: '1',
+                q: searchTerm
+            };
+            $.getJSON(url, params, showResults);
+        }
+
+        function showResults(results) {
+            var html = "";
+            var entries = results.items;
+            $.each(entries, function(index, value) {
+                var title = value.snippet.title;
+                var thumbnail = value.snippet.thumbnails.default.url;
+                var id = value.id.videoId;
+                html += '<p>' + title + '</p>';
+                html += '<img src="' + thumbnail + '">';
+                window.navigator.__defineGetter__('userAgent', function() {
+                    return 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36';
+                });
+                document.getElementById("ytplayer").src = "https://www.youtube.com/embed/" + id + "?autoplay=1";
+                player.playVideo();
+
+
+            });
+            $('#search-results').html(html);
+        }
+    </script>
+
+    <style>
+        body {
+            text-align: center;
+            margin: 0 auto;
+            padding: 300px 50px;
+            background-image: url("Searchs_006.png");
+            background-repeat: no-repeat, repeat;
+        }
+        
+        input[type="submit"] {
+            font-family: FontAwesome;
+        }
+        
+        input[type=text] {
+            width: 200px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 50px;
+            font-size: 16px;
+            background-color: white;
+            background-image: url('searchicon.png');
+            background-position: 10px 10px;
+            background-repeat: no-repeat;
+            padding: 12px 20px 12px 40px;
+            -webkit-transition: width 0.4s ease-in-out;
+            transition: width 0.4s ease-in-out;
+        }
+        
+        input[type=text]:focus {
+            width: 100%;
+        }
+        
+        .search_btn {
+            background-color: #44c767;
+            -moz-border-radius: 28px;
+            -webkit-border-radius: 28px;
+            border-radius: 28px;
+            border: 1px solid #18ab29;
+            display: inline-block;
+            cursor: pointer;
+            color: #ffffff;
+            font-size: 17px;
+            padding: 16px 31px;
+            text-decoration: none;
+            text-shadow: 0px 1px 0px #2f6627;
+            font-family: FontAwesome, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            content: "\f000";
+        }
+    </style>
+</body>
+
+</html>
