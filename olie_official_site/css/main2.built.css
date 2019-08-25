@@ -1,0 +1,23 @@
+body {
+    word-break: keep-all;
+}
+
+HTML.oldie {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+@media only screen and (max-width: 402px) {
+    .xsmall-hide {
+        display: none;
+    }
+    .xsmall-show {
+        display: block;
+    }
+    .xsmall-show-inline {
+        display: inline;
+    }
+    .xsmall-show-inlineblock {
+        display: inline-block;
+    }
+}

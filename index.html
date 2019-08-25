@@ -7,23 +7,47 @@
     <title>OLIE - WEB Beta</title>
     <link href="main.css" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="https://raw.githubusercontent.com/IceCream0910/olie.github.com/master/assets/img/logoo1.ico">
+
 </head>
 
 <body>
-    <div style="text-align:center; color:#ffffff; font-size:25pt;">
-        <strong>원하는 노래를<BR>검색해보세요.</strong>
+    <div id="main">
+        <div style="text-align:center; color:#ffffff; font-size:25pt;">
+            <strong id="HiText_real">오늘은 어떤<BR>노래를 들을까요?</strong>
+        </div>
+
+        <form id="search-term"> <br><br><input id="query" type="text" placeholder="검색"> <br>
+        </form>
+
+
+    </div>
+    <div id="player" style="display:none;">
+        <iframe style=" position: absolute;  left: 0; right: 0; margin-left: auto; margin-right: auto;" id="ytplayer" height="250px" width="100%" src="http://olie.bu.to" allow='autoplay' frameborder="0" allowfullscreen></iframe>
     </div>
 
-    <form id="search-term"> <br><br><input id="query" type="text" placeholder="검색"> <br>
-    </form>
-
-    </div>
-    </div>
-    <br> <br> <br> <br> <br> <br> <br> <br> <br><br><br>
-
-    <iframe style=" position: absolute;  left: 0; right: 0; margin-left: auto; margin-right: auto;" id="ytplayer" width="560" height="315" src="http://www.youtube.com/embed/Fm5iP0S1z9w?autoplay=1?rel=0&amp;autoplay" allow='autoplay' frameborder="0" allowfullscreen></iframe>
+    <a href="javascript:exit_player();" class="float" id="float">
+        <i class="fa fa-backspace"></i> 플레이어
+    </a>
     <script>
         var player;
+        var HiText = ["오늘은 어떤<br>노래를 들을까요?", "반가워요!<br>듣고 싶은 노래있어요?", "듣고 싶은 노래를<r> 검색해보세요.", "원하는 노래를<br>검색해보세요."]
+
+        function shuffle(a) {
+            var j, x, i;
+            for (i = a.length; i; i -= 1) {
+                j = Math.floor(Math.random() * i);
+                x = a[i - 1];
+                a[i - 1] = a[j];
+                a[j] = x;
+            }
+            document.getElementById("HiText_real").innerHTML = HiText[3];
+        }
+
+        shuffle(myArray);
+
+
+
 
         // this function gets called when API is ready to use
         function onYouTubePlayerAPIReady() {
@@ -46,6 +70,9 @@
 
         function getRequest(searchTerm) {
             var url = 'https://www.googleapis.com/youtube/v3/search';
+            document.getElementById("player").style.display = "block";
+            document.getElementById("main").style.display = "none";
+
             var params = {
                 part: 'snippet',
                 key: 'AIzaSyABsZWvNSXqn6Xla0IVWMktRnQVhmf258g',
@@ -67,12 +94,29 @@
                 window.navigator.__defineGetter__('userAgent', function() {
                     return 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36';
                 });
-                document.getElementById("ytplayer").src = "https://www.youtube.com/embed/" + id + "?autoplay=1";
-                player.playVideo();
+
+                document.getElementById("ytplayer").src = "https://www.youtube.com/embed/" + id + "?rel=0&autoplay=1";
+                document.getElementById("float").innerHTML = "나가기";
+
 
 
             });
             $('#search-results').html(html);
+        }
+
+        function exit_player() {
+            var current = document.getElementById('float').innerHTML;
+            if (current == "나가기") {
+                document.getElementById("player").style.display = "none";
+                document.getElementById("main").style.display = "block";
+                document.getElementById("float").innerHTML = "플레이어";
+            } else {
+                document.getElementById("player").style.display = "block";
+                document.getElementById("main").style.display = "none";
+                document.getElementById("float").innerHTML = "나가기";
+
+            }
+
         }
     </script>
 
@@ -81,8 +125,9 @@
             text-align: center;
             margin: 0 auto;
             padding: 300px 50px;
-            background-image: url("https://images.unsplash.com/photo-1498696815880-6fd23346fe56?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80");
+            background-image: url("https://66.media.tumblr.com/f42100020a90faea193c3ae7549e28ca/tumblr_ovke6rQjK21qedimno1_r1_1280.gif");
             background-repeat: no-repeat, repeat;
+            background-color: #337aff;
         }
         
         input[type="submit"] {
@@ -90,7 +135,7 @@
         }
         
         input[type=text] {
-            width: 200px;
+            width: 250px;
             box-sizing: border-box;
             border: 1px solid #ccc;
             border-radius: 50px;
@@ -124,7 +169,57 @@
             font-family: FontAwesome, 'Helvetica Neue', Helvetica, Arial, sans-serif;
             content: "\f000";
         }
+        
+        .navbar {
+            background-color: #ffffff;
+            opacity: 0.5;
+            border-bottom-color: #aaa;
+            border-top-width: 3px;
+            overflow: hidden;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        /* Style the links inside the navigation bar */
+        
+        .navbar a {
+            float: left;
+            display: block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+        /* Change the color of links on hover */
+        
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        /* Add a color to the active/current link */
+        
+        .navbar a.active {
+            background-color: rgb(112, 95, 207);
+            color: white;
+        }
+        
+        .float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background-color: #0C9;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            box-shadow: 2px 2px 3px #999;
+        }
     </style>
 </body>
+
+
+
 
 </html>
