@@ -31,20 +31,7 @@
     </a>
     <script>
         var player;
-        var HiText = ["오늘은 어떤<br>노래를 들을까요?", "반가워요!<br>듣고 싶은 노래있어요?", "듣고 싶은 노래를<r> 검색해보세요.", "원하는 노래를<br>검색해보세요."]
-
-        function shuffle(a) {
-            var j, x, i;
-            for (i = a.length; i; i -= 1) {
-                j = Math.floor(Math.random() * i);
-                x = a[i - 1];
-                a[i - 1] = a[j];
-                a[j] = x;
-            }
-            document.getElementById("HiText_real").innerHTML = HiText[3];
-        }
-
-        shuffle(myArray);
+        
 
 
 
